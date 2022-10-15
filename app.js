@@ -10,16 +10,6 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname + "/public")));
 // app.use(express.static("public"));
 
-app.get("/todos", async (req, res) => {
-  try {
-    const todos = await Todo.findAll({ order: [["id", "ASC"]] });
-    return res.json(todos);
-  } catch (error) {
-    console.log(error);
-    return res.status(422).json(error);
-  }
-});
-
 app.get("/", async (req, res) => {
   const allTodos = await Todo.getTodos();
   if (req.accepts("html")) {
@@ -28,6 +18,16 @@ app.get("/", async (req, res) => {
     });
   } else {
     res.json(allTodos);
+  }
+});
+
+app.get("/todos", async (req, res) => {
+  try {
+    const todos = await Todo.findAll({ order: [["id", "ASC"]] });
+    return res.json(todos);
+  } catch (error) {
+    console.log(error);
+    return res.status(422).json(error);
   }
 });
 
